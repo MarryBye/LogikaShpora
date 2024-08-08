@@ -105,3 +105,12 @@ footer {
 footer img {
     padding-top: 32px;
 }
+
+.difficulty_img {
+    max-width: 164px;
+    max-height: 72px;
+    min-width: 164px;
+    min-height: 72px;
+    justify-self: center;
+    align-self: flex-end;
+}

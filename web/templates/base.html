@@ -2,12 +2,14 @@
 
 <html>
     <head>
-        <title>LogikaShpora</title>
+        <title>LogikaShpora | Забув? Згадай!</title>
+        <link rel="icon" href="{{url_for('static', filename='img/logo.png')}}">
         <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
         <script src="{{url_for('static', filename='js/button_select_script.js')}}"></script>
+        <script src="{{url_for('static', filename='js/get_path_parameters.js')}}"></script>
         <script>hljs.highlightAll();</script>
     </head>
     <body>
@@ -20,7 +22,7 @@
         <main>
             <div class="navbar_left">
                 {% for module in modules_info %}
-                    <button id="button_choose_module" data-module={{module}}>{{modules_info[module]["name"]}}</button>
+                    <button id="button_choose_module" data-module={{module}}>{{modules_info[module]["name"]}} ({{modules_info[module]["lessons_count"]}})</button>
                 {% endfor %}
             </div>
             <div class="navbar_lessons">
@@ -32,14 +34,16 @@
 
         <footer>
             Created by Viktor Lukianov 2024
-            <a href="https://learn.logikaschool.com/login"><img src="https://i.work.ua/employer_design/8/6/5/1464865_company_logo_3.png"></a>
+            <a href="https://learn.logikaschool.com/login"><img src="{{url_for('static', filename='img/logika.png')}}"></a>
         </footer>
 
         <script>
             $(document).ready(function() {
-                var module = history.state.module;
-                var lesson = history.state.lesson;
-        
+                var parameters = get_path_parameters()
+
+                var module = parameters["module"];
+                var lesson = parameters["lesson"];
+
                 if (module) {
                     $.ajax({
                         url: "/module=" + module,
@@ -66,8 +70,11 @@
             });
 
             window.onpopstate = (function(event) {
-                var module = event.state.module;
-                var lesson = event.state.lesson;
+
+                var parameters = get_path_parameters()
+
+                var module = parameters["module"];
+                var lesson = parameters["lesson"];
         
                 if (module) {
                     $.ajax({
@@ -92,6 +99,7 @@
             });
 
             $(document).on('click', 'button#button_choose_module', function(){
+
                 var module = $(this).data('module');
 
                 history.pushState({module: module}, '', '/module=' + module);
@@ -107,7 +115,10 @@
             });
 
             $(document).on('click', 'button#button_choose_lesson', function(){
-                var module = history.state.module;
+
+                var parameters = get_path_parameters()
+
+                var module = parameters["module"];
                 var lesson = $(this).data('lesson');
 
                 history.pushState({module: module, lesson: lesson}, '', '/module=' + module + '/lesson=' + lesson);

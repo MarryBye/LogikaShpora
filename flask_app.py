@@ -29,6 +29,9 @@ def load_module(module):
 @app.route("/module=<module>/lesson=<lesson>")
 def load_lesson(module, lesson):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template(f"lessons/{module}/{lesson}/lesson.html")
+        return render_template(f"lessons/{module}/{lesson}/lesson.html", difficulty_level=MODULES[module]["lessons"][lesson]["difficulty"])
     else:
         return render_template("index.html", modules_info=MODULES)
+
+if __name__ == "__main__":
+    app.run()
