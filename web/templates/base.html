@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 
 <html>
+
     <head>
+
         <title>LogikaShpora | Забув? Згадай!</title>
-        <link rel="icon" href="{{url_for('static', filename='img/logo.png')}}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
+
+        <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
-        <script src="{{url_for('static', filename='js/button_select_script.js')}}"></script>
-        <script src="{{url_for('static', filename='js/get_path_parameters.js')}}"></script>
+        
+        <script src="{{ url_for('static', filename='js/button_select_script.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/get_path_parameters.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/choose_lesson.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/choose_module.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/page_load.js') }}"></script>
+
         <script>hljs.highlightAll();</script>
+
     </head>
+
     <body>
 
         <header>
+
             <h1>LogikaShpora</h1>
             <h4>Забув? Згадай!</h4>
+
         </header>
 
         <main>
+
             <div class="navbar_left">
                 {% for module in modules_info %}
                     <button id="button_choose_module" data-module={{module}}>{{modules_info[module]["name"]}} ({{modules_info[module]["lessons_count"]}})</button>
@@ -30,110 +46,27 @@
             <div class="content_right">
                 <h1>Обери модуль, а потім урок щоб переглянути інформацію!</h1>
             </div>
+
         </main>
 
         <footer>
-            Created by Viktor Lukianov 2024
+
             <a href="https://learn.logikaschool.com/login"><img src="{{url_for('static', filename='img/logika.png')}}"></a>
+            <h2>Created by Viktor Lukianov 2024</h2>
+            <a href="https://github.com/MarryBye/LogikaShpora"><h3>Source code on GitHub</h3></a>
+
         </footer>
 
         <script>
-            $(document).ready(function() {
-                var parameters = get_path_parameters()
 
-                var module = parameters["module"];
-                var lesson = parameters["lesson"];
+            $(document).ready(page_load);
+            $(document).on('click', 'button#button_choose_module', choose_module);
+            $(document).on('click', 'button#button_choose_lesson', choose_lesson);
 
-                if (module) {
-                    $.ajax({
-                        url: "/module=" + module,
-                        method: 'GET',
-                        success: function(data) {
-                            $(".navbar_lessons").html(data);
-                        }
-                    });
-
-                    style_choosen_button("button_choose_module", "module", module)
-
-                }
-
-                if (lesson) {
-                    $.ajax({
-                        url: "/module=" + module + "/lesson=" + lesson,
-                        method: 'GET',
-                        success: function(data) {
-                            $(".content_right").html(data);
-                        }
-                    });
-                    style_choosen_button("button_choose_lesson", "lesson", lesson)
-                }
-            });
-
-            window.onpopstate = (function(event) {
-
-                var parameters = get_path_parameters()
-
-                var module = parameters["module"];
-                var lesson = parameters["lesson"];
-        
-                if (module) {
-                    $.ajax({
-                        url: "/module=" + module,
-                        method: 'GET',
-                        success: function(data) {
-                            $(".navbar_lessons").html(data);
-                        }
-                    });
-                    style_choosen_button("button_choose_module", "module", module)
-                }
-                if (lesson) {
-                    $.ajax({
-                        url: "/module=" + module + "/lesson=" + lesson,
-                        method: 'GET',
-                        success: function(data) {
-                            $(".content_right").html(data);
-                        }
-                    });
-                    style_choosen_button("button_choose_lesson", "lesson", lesson)
-                }
-            });
-
-            $(document).on('click', 'button#button_choose_module', function(){
-
-                var module = $(this).data('module');
-
-                history.pushState({module: module}, '', '/module=' + module);
-                
-                $.ajax({
-                    url: "/module=" + module,
-                    method: 'GET',
-                    success: function(data) {
-                        $(".navbar_lessons").html(data);
-                    }
-                });
-                style_choosen_button("button_choose_module", "module", module)
-            });
-
-            $(document).on('click', 'button#button_choose_lesson', function(){
-
-                var parameters = get_path_parameters()
-
-                var module = parameters["module"];
-                var lesson = $(this).data('lesson');
-
-                history.pushState({module: module, lesson: lesson}, '', '/module=' + module + '/lesson=' + lesson);
-
-                $.ajax({
-                    url: "/module=" + module + "/lesson=" + lesson,
-                    method: 'GET',
-                    success: function(data) {
-                        $(".content_right").html(data);
-                    }
-                });
-                style_choosen_button("button_choose_lesson", "lesson", lesson)
-            });
+            window.onpopstate = page_load;
 
         </script>
 
     </body>
+
 </html>
