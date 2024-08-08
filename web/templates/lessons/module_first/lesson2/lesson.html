@@ -1,57 +1,33 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 
-<h1>Форматування тексту</h1>
+<h1>Вивод інформації</h1>
 
-<h3>За допомогою конкатенації (з'єднання)</h3>
+<h3>Вивести у консоль рядок:</h3>
 <pre>
     <code class="language-python">
-        a = "Hello"
-        b = "World"
-        print(a + b)
-    </code>
-</pre>
-<h4>Потрібно бути обережним із типами даних: все має бути рядком, якщо ви хочете вивести саме рядок. Або все має бути числами, якщо ви виводите, наприклад, суму чисел</h4>
-<pre>
-    <code class="language-python">
-        a = "Hello" # string - рядок
-        b = 5       # integer - число
-        print(a + str(b))
+        print("Hello world!")
     </code>
 </pre>
 
-<h3>За допомогою методу .format()</h3>
+<h3>Вивести у консоль змінну:</h3>
 <pre>
     <code class="language-python">
-        a = "Hello {0}!".format("world")
+        a = "Hello world!"
         print(a)
     </code>
 </pre>
 
-<h3>За допомогою методу f-string</h3>
+<h3>Вивести багаторядковий текст:</h3>
 <pre>
     <code class="language-python">
-        a = "world"
-        print(f"Hello {a}!")
-    </code>
-</pre>
-
-<h3>За допомогою шаблонів</h3>
-<pre>
-    <code class="language-python">
-        a = "world"
-        b = "Hello %s!" % a # на місце %s буде підставлена змінна a
-        print(b)
-    </code>
-</pre>
-
-<h3>Декілька шаблонів</h3>
-<pre>
-    <code class="language-python">
-        name = "Oleg"
-        meters = 5
-        time = 3
-        text = "%s, ви пройшли %s метрів за %s секунд!" % (name, meters, time)
-        print(text)
+        print(
+            """
+            Дуже великий багаторядковий текст!!!!!
+            Дуже великий багаторядковий текст!!!!!
+            Дуже великий багаторядковий текст!!!!!
+            Дуже великий багаторядковий текст!!!!!
+            """
+        )
     </code>
 </pre>

@@ -1,18 +1,13 @@
 import os
 
 from flask import *
+from src.funcs.get_lessons import get_lessons
 
 STATIC_PATH = os.path.join("web")
 TEMPLATES_PATH = os.path.join(STATIC_PATH, "templates")
 LESSONS_PATH = os.path.join(TEMPLATES_PATH, "lessons")
 
-MODULES = {}
-
-for module in os.listdir(LESSONS_PATH):
-    module_lessons = os.listdir(os.path.join(LESSONS_PATH, module))
-    MODULES[module] = {}
-    MODULES[module]["lessons_count"] = len(module_lessons)
-    MODULES[module]["lessons"] = [lesson for lesson in module_lessons]
+MODULES = get_lessons()
 
 web_app = Flask(
     __name__,
@@ -22,6 +17,7 @@ web_app = Flask(
 
 @web_app.route("/")
 def index():
+    print(MODULES)
     return render_template("index.html", modules_info=MODULES)
 
 @web_app.route("/module=<module>")

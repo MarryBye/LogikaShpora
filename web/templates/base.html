@@ -18,7 +18,7 @@
         <main>
             <div class="navbar_left">
                 {% for module in modules_info %}
-                    <button id="button_choose_module" data-module={{module}}>{{module}}</button>
+                    <button id="button_choose_module" data-module={{module}}>{{modules_info[module]["name"]}}</button>
                 {% endfor %}
             </div>
             <div class="content_right">
@@ -27,7 +27,6 @@
         </main>
 
         <script>
-
             $(document).ready(function() {
                 var module = history.state.module;
                 var lesson = history.state.lesson;
@@ -40,16 +39,40 @@
                             $(".content_right").html(data);
                         }
                     });
+                }
+
+                if (lesson) {
+                    $.ajax({
+                        url: "/module=" + module + "/lesson=" + lesson,
+                        method: 'GET',
+                        success: function(data) {
+                            $(".content_right").html(data);
+                        }
+                    });
+                }
+            });
+
+            window.onpopstate = (function(event) {
+                var module = event.state.module;
+                var lesson = event.state.lesson;
         
-                    if (lesson) {
-                        $.ajax({
-                            url: "/module=" + module + "/lesson=" + lesson,
-                            method: 'GET',
-                            success: function(data) {
-                                $(".content_right").html(data);
-                            }
-                        });
-                    }
+                if (module) {
+                    $.ajax({
+                        url: "/module=" + module,
+                        method: 'GET',
+                        success: function(data) {
+                            $(".content_right").html(data);
+                        }
+                    });
+                }
+                if (lesson) {
+                    $.ajax({
+                        url: "/module=" + module + "/lesson=" + lesson,
+                        method: 'GET',
+                        success: function(data) {
+                            $(".content_right").html(data);
+                        }
+                    });
                 }
             });
 
