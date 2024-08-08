@@ -29,12 +29,10 @@
         <script>
 
             $(document).ready(function() {
-                // Проверяем, если есть параметры в URL
                 var module = history.state.module;
                 var lesson = history.state.lesson;
         
                 if (module) {
-                    // Загружаем модуль
                     $.ajax({
                         url: "/module=" + module,
                         method: 'GET',
@@ -44,7 +42,6 @@
                     });
         
                     if (lesson) {
-                        // Загружаем урок
                         $.ajax({
                             url: "/module=" + module + "/lesson=" + lesson,
                             method: 'GET',
