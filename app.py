@@ -1,19 +1,14 @@
-import os
-
 from flask import *
-from src.funcs.get_lessons import get_lessons
-
-STATIC_PATH = os.path.join("web")
-TEMPLATES_PATH = os.path.join(STATIC_PATH, "templates")
-LESSONS_PATH = os.path.join(TEMPLATES_PATH, "lessons")
-
-MODULES = get_lessons()
+from paths import *
+from funcs import get_lessons
 
 web_app = Flask(
     __name__,
     static_folder=STATIC_PATH,
     template_folder=TEMPLATES_PATH,
 )
+
+MODULES = get_lessons()
 
 @web_app.route("/")
 def index():
@@ -37,5 +32,3 @@ def load_lesson(module, lesson):
         return render_template(f"lessons/{module}/{lesson}/lesson.html")
     else:
         return render_template("index.html", modules_info=MODULES)
-    
-web_app.run()
