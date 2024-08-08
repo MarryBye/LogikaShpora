@@ -1,8 +1,8 @@
-from flask import *
+from flask import Flask, render_template, render_template_string, request
 from paths import *
 from funcs import get_lessons
 
-web_app = Flask(
+app = Flask(
     __name__,
     static_folder=STATIC_PATH,
     template_folder=TEMPLATES_PATH,
@@ -10,12 +10,12 @@ web_app = Flask(
 
 MODULES = get_lessons()
 
-@web_app.route("/")
+@app.route("/")
 def index():
     print(MODULES)
     return render_template("index.html", modules_info=MODULES)
 
-@web_app.route("/module=<module>")
+@app.route("/module=<module>")
 def load_module(module):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         function_string = """
@@ -26,7 +26,7 @@ def load_module(module):
     else:
         return render_template("index.html", modules_info=MODULES)
 
-@web_app.route("/module=<module>/lesson=<lesson>")
+@app.route("/module=<module>/lesson=<lesson>")
 def load_lesson(module, lesson):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return render_template(f"lessons/{module}/{lesson}/lesson.html")
