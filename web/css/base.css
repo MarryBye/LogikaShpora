@@ -84,10 +84,8 @@ button:active {
 pre, code, .hljs {
     background-color: transparent !important; /* Прозрачный фон */
     padding: 0; /* Добавить отступы для удобства */
-    font-size: 24px;
+    font-size: 16px;
     margin: 0;
-    line-height: 24px;
-    text-align: left;
 }
 
 .hljs {
