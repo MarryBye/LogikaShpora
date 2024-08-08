@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>LogikaShpora</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+
+        <header>
+            <h1>LogikaShpora</h1>
+            <h4>Забув? Згадай!</h4>
+        </header>
+        <main>
+            <div class="navbar_left">
+                {% for module in modules_info %}
+                    <button id="button_choose_module" data-module={{module}}>{{module}}</button>
+                {% endfor %}
+            </div>
+            <div class="content_right">
+                <h1>Обери модуль щоб переглянути потрібний урок!</h1>
+            </div>
+        </main>
+
+        <script>
+
+            $(document).ready(function() {
+                // Проверяем, если есть параметры в URL
+                var module = history.state.module;
+                var lesson = history.state.lesson;
+        
+                if (module) {
+                    // Загружаем модуль
+                    $.ajax({
+                        url: "/module=" + module,
+                        method: 'GET',
+                        success: function(data) {
+                            $(".content_right").html(data);
+                        }
+                    });
+        
+                    if (lesson) {
+                        // Загружаем урок
+                        $.ajax({
+                            url: "/module=" + module + "/lesson=" + lesson,
+                            method: 'GET',
+                            success: function(data) {
+                                $(".content_right").html(data);
+                            }
+                        });
+                    }
+                }
+            });
+
+            $(document).on('click', 'button#button_choose_module', function(){
+                var module = $(this).data('module');
+
+                history.pushState({module: module}, '', '/module=' + module);
+                
+                $.ajax({
+                    url: "/module=" + module,
+                    method: 'GET',
+                    success: function(data) {
+                        $(".content_right").html(data);
+                    }
+                });
+            });
+
+            $(document).on('click', 'button#button_choose_lesson', function(){
+                var module = history.state.module;
+                var lesson = $(this).data('lesson');
+
+                history.pushState({module: module, lesson: lesson}, '', '/module=' + module + '/lesson=' + lesson);
+
+                $.ajax({
+                    url: "/module=" + module + "/lesson=" + lesson,
+                    method: 'GET',
+                    success: function(data) {
+                        $(".content_right").html(data);
+                    }
+                });
+            });
+
+        </script>
+
+    </body>
+</html>

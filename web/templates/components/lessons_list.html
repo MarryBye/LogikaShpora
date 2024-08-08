@@ -1,0 +1,7 @@
+{% macro generate_lessons_list(lessons) %}
+    <div class="grid_lessons">
+        {% for lesson in lessons %}
+            <button id="button_choose_lesson" data-lesson={{lesson}}>{{lesson}}</button>
+        {% endfor %}
+    </div>
+{% endmacro %}
