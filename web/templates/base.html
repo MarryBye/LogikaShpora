@@ -35,16 +35,22 @@
         </header>
 
         <main>
+            
+            <div class="container">
 
-            <div class="navbar_left">
-                {% for module in modules_info %}
-                    <button id="button_choose_module" data-module={{module}}>{{modules_info[module]["name"]}} ({{modules_info[module]["lessons_count"]}})</button>
-                {% endfor %}
-            </div>
-            <div class="navbar_lessons">
-            </div>
-            <div class="content_right">
-                <h1>Обери модуль, а потім урок щоб переглянути інформацію!</h1>
+                <div class="navbar_left">
+                    {% for module in modules_info %}
+                        <button id="button_choose_module" data-module={{module}}>{{modules_info[module]["name"]}} ({{modules_info[module]["lessons_count"]}})</button>
+                    {% endfor %}
+                </div>
+                
+                <div class="navbar_lessons">
+                </div>
+
+                <div class="content_right">
+                    <h1>Обери модуль, а потім урок щоб переглянути інформацію!</h1>
+                </div>
+
             </div>
 
         </main>
